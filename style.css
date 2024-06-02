@@ -1,0 +1,77 @@
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.question {
+    margin-bottom: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.button-group button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.button-group button:hover {
+    background-color: #0056b3;
+}
+
+.button-group button.selected {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+.button-group .other-button {
+    background-color: transparent;
+    color: #007BFF;
+    border: 1px solid #007BFF;
+}
+
+.submit-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    display: none;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+input[type="text"] {
+    margin: 5px;
+    padding: 10px 20px;
+    border: 1px solid #007BFF;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #0056b3;
+}
