@@ -18,7 +18,6 @@ const formConfig = [
 ];
 
 const answers = {};
-
 function generateForm() {
     const formContainer = document.getElementById('form');
     formConfig.forEach((section, index) => {
@@ -30,7 +29,7 @@ function generateForm() {
         }
         
         const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
+        questionDiv.className = 'question fs-3';
         questionDiv.textContent = section.question;
         sectionDiv.appendChild(questionDiv);
         
@@ -42,6 +41,13 @@ function generateForm() {
             button.onclick = () => selectAnswer(index + 1, option);
             buttonGroup.appendChild(button);
         });
+        if (index === 0) {
+        const regenerateButton = document.createElement('button');
+        regenerateButton.className = 'btn btn-secondary';
+        regenerateButton.textContent = 'Regenerate Options';
+        regenerateButton.onclick = regenerateTimeOptions;
+        sectionDiv.appendChild(regenerateButton);
+        }
 
         sectionDiv.appendChild(buttonGroup);
         formContainer.appendChild(sectionDiv);
@@ -87,6 +93,99 @@ function updateButtonSelection(section, answer) {
             button.classList.remove('selected');
         }
     });
+}
+
+function regenerateTimeOptions() {
+    fetch('http://127.0.0.1:5000/get_time_options')
+        .then(response => response.json())
+        .then(data => {
+            timeOptions = data.time_options;
+            console.log(timeOptions)
+            // Check if timeOptions is a string and try to parse it
+            if (typeof timeOptions === 'string') {
+                try {
+                    timeOptions = JSON.parse(timeOptions);
+                } catch (e) {
+                    console.error('Error parsing timeOptions:', e);
+                    return;
+                }
+            }
+
+            if (Array.isArray(timeOptions)) {
+                const buttonGroup = document.querySelector('#section1 .button-group');
+                buttonGroup.innerHTML = ''; // Clear existing options
+
+                timeOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option;
+                    button.onclick = () => selectAnswer(1, option);
+                    buttonGroup.appendChild(button);
+                });
+            } else {
+                console.error('Error: timeOptions is not an array');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+async function submitForm() {
+    console.log(JSON.stringify(answers));
+    
+    const responseDiv = document.getElementById('response');
+    responseDiv.innerHTML = 'Loading...';
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/generate_draft_story', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(answers)
+        });
+        const data = await response.json();
+        responseDiv.innerHTML = data.answer;
+    } catch (error) {
+        responseDiv.innerHTML = 'Error: ' + error.message;
+    }
+}
+
+async function generateTimes() {
+    console.log(JSON.stringify(answers));
+    
+    try {
+        const response = await fetch('http://127.0.0.1:5000/get_time_options', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(answers)
+        });
+        const data = await response.json();
+        responseDiv.innerHTML = data.answer;
+    } catch (error) {
+        responseDiv.innerHTML = 'Error: ' + error.message;
+    }
+}
+
+async function submitForm() {
+    console.log(JSON.stringify(answers));
+    
+    const responseDiv = document.getElementById('response');
+    responseDiv.innerHTML = 'Loading...';
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/generate_draft_story', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(answers)
+        });
+        const data = await response.json();
+        responseDiv.innerHTML = data.answer;
+    } catch (error) {
+        responseDiv.innerHTML = 'Error: ' + error.message;
+    }
 }
 
 async function submitForm() {

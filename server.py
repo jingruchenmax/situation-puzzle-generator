@@ -19,6 +19,12 @@ def generate_draft_story_message(time,place,character,death):
     ]
     return messages
 
+def generate_story_options(request):
+    messages = [
+        {"role": "user", "content": request}
+    ]
+    return messages
+
 @app.route('/query', methods=['POST'])
 def query():
     data = request.get_json()
@@ -61,7 +67,25 @@ def draft_story():
         print(f"General error: {e}")
         return jsonify({'error': f"General error: {e}"}), 500
 
+@app.route('/get_time_options', methods=['GET'])
+def get_time_options():
+    if not query:
+        return jsonify({'error': 'No query provided'}), 400
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=generate_story_options("Provide 6 different times in an array format, for example, [\"Evening\", \"May\", \"Night\", \"1999\", \"Morning\", \"Monday\"]")
+        )
+        answer = response.choices[0].message.content
+        print(response.choices[0].message.content)
+        return jsonify({'time_options': answer})
+    except Exception as e:
+        print(f"General error: {e}")
+        return jsonify({'error': f"General error: {e}"}), 500
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
 
 
