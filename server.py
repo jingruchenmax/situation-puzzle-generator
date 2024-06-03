@@ -43,6 +43,10 @@ def generate_story_options(request):
     ]
     return messages
 
+@app.route('/')
+def index():
+    return render_template("index.html")
+ 
 @app.route('/generate_draft_story', methods=['POST'])
 def draft_story():
     global draft_story_save, history
@@ -129,4 +133,4 @@ def generate_final_story():
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000)
-    app.run(debug=True)
+    app.run()
