@@ -1,3 +1,5 @@
+const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:5000';
+
 const formConfig = [
     {
         question: "Select a period of time",
@@ -124,7 +126,7 @@ function regenerateOptions(section) {
     };
     const type = typeMapping[section];
 
-    fetch(`http://127.0.0.1:5000/get_options?type=${type}`)
+    fetch(`${backendUrl}/get_options?type=${type}`)
         .then(response => response.json())
         .then(data => {
             let options = data[`options`];
@@ -164,7 +166,7 @@ async function submitForm() {
     responseDiv.innerHTML = 'Loading...';
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/generate_draft_story', {
+        const response = await fetch(`${backendUrl}/generate_draft_story`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -195,7 +197,7 @@ async function generatePuzzleQuestion(){
     puzzleDiv.style.removeProperty('display');
     puzzleDiv.innerHTML = 'Loading...';
     puzzles={}
-    fetch(`http://127.0.0.1:5000/get_puzzle_options`)
+    fetch(`${backendUrl}/get_puzzle_options`)
         .then(response => response.json())
         .then(data => {
             let options = data[`options`];
@@ -284,7 +286,7 @@ async function generateFinalStory() {
     finalstorydiv.style.removeProperty('display');
     finalstorydiv.innerHTML = "";
     try {
-        const response = await fetch('http://127.0.0.1:5000/generate_final_story', {
+        const response = await fetch(`${backendUrl}/generate_final_story`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
