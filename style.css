@@ -3,7 +3,6 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
     margin-bottom: 20px;
     flex-direction: column;
     align-items: center;
@@ -15,19 +14,14 @@
     text-align: center;
 }
 
-.button-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
 
 .button-group button {
     margin: 5px;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid #0056b3;
     border-radius: 5px;
-    background-color: #007BFF;
-    color: white;
+    background-color: #ffffff;
+    color: #0056b3;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
 }
@@ -38,6 +32,7 @@
 
 .button-group button.selected {
     background-color: #0056b3;
+    color:#ffffff;
     transform: scale(1.1);
 }
 
