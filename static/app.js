@@ -1,5 +1,5 @@
 var BACKEND_URL = "https://situationpuzzlegenerator.azurewebsites.net";
-const backendUrl = BACKEND_URL || 'http://127.0.0.1:5000';
+const backendUrl =  'http://127.0.0.1:5010';
 
 console.log(BACKEND_URL);
 
@@ -198,7 +198,14 @@ async function submitForm() {
 async function generatePuzzleQuestion(){
     const puzzleDiv = document.getElementById('puzzle-form');
     puzzleDiv.style.removeProperty('display');
-    puzzleDiv.innerHTML = 'Loading...';
+    puzzleDiv.innerHTML="";
+    const regeneratePuzzleButton = document.createElement('button');
+    regeneratePuzzleButton.className = "btn btn-outline-secondary text-end mt-3";
+    regeneratePuzzleButton.id="regen-puzzle-button";
+    regeneratePuzzleButton.textContent = "Regenerate";
+    regeneratePuzzleButton.onclick = ()=> generatePuzzleQuestion();
+    puzzleDiv.appendChild(regeneratePuzzleButton);
+
     puzzles={}
     fetch(`${backendUrl}/get_puzzle_options`)
         .then(response => response.json())
@@ -216,7 +223,6 @@ async function generatePuzzleQuestion(){
             }
 
             if (Array.isArray(options)) {
-                puzzleDiv.innerHTML = "";
                 hintDiv = document.createElement('div');
                 hintDiv.className = 'question fs-4';
                 hintDiv.textContent = "Choose the information below that you wish to conceal in the situation puzzle";
@@ -231,13 +237,6 @@ async function generatePuzzleQuestion(){
                     puzzleDiv.appendChild(buttonDiv);
                 });
                 
-                const regeneratePuzzleButton = document.createElement('button');
-                regeneratePuzzleButton.className = "btn btn-outline-secondary text-end mt-3";
-                regeneratePuzzleButton.id="regen-puzzle-button";
-                regeneratePuzzleButton.textContent = "Regenerate";
-                regeneratePuzzleButton.onclick = ()=> generatePuzzleQuestion();
-                puzzleDiv.appendChild(regeneratePuzzleButton);
-
                 const confirmButtonDiv = document.getElementById("final-generate-button");
                 const confirmButton = document.createElement('button');
                 confirmButton.id="confirm-button";
@@ -288,6 +287,13 @@ async function generateFinalStory() {
     finalstorydiv=document.getElementById("final-story");
     finalstorydiv.style.removeProperty('display');
     finalstorydiv.innerHTML = "";
+
+    const regenerateFinalStoryButton = document.createElement('button');
+    regenerateFinalStoryButton.className = "btn btn-outline-secondary text-end mt-3";
+    regenerateFinalStoryButton.id="regen-puzzle-button";
+    regenerateFinalStoryButton.textContent = "Regenerate";
+    regenerateFinalStoryButton.onclick = ()=> generateFinalStory();
+    finalstorydiv.appendChild(regenerateFinalStoryButton);
     try {
         const response = await fetch(`${backendUrl}/generate_final_story`, {
             method: 'POST',
