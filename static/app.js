@@ -1,4 +1,7 @@
-const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:5000';
+var BACKEND_URL = "https://situationpuzzlegenerator.azurewebsites.net";
+const backendUrl = BACKEND_URL || 'http://127.0.0.1:5000';
+
+console.log(BACKEND_URL);
 
 const formConfig = [
     {

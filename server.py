@@ -1,7 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from openai import OpenAI
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 app = Flask(__name__)
 client = OpenAI()
 CORS(app)
@@ -45,7 +48,8 @@ def generate_story_options(request):
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    backend_url = os.getenv('BACKEND_URL')
+    return render_template('index.html', backend_url=backend_url)
  
 @app.route('/generate_draft_story', methods=['POST'])
 def draft_story():
@@ -132,5 +136,4 @@ def generate_final_story():
         return jsonify({'error': f"General error: {e}"}), 500
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=5000)
-    app.run()
+    app.run(host='0.0.0.0', port=5010)
