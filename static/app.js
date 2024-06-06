@@ -26,6 +26,7 @@ const answers = {};
 puzzles={};
 draft_story="";
 final_story="";
+retry=0;
 function generateForm() {
     const formContainer = document.getElementById('form');
     formConfig.forEach((section, index) => {
@@ -211,11 +212,16 @@ async function generatePuzzleQuestion(){
                     options = JSON.parse(options);
                 } catch (e) {
                     console.error('Error parsing options:', e);
+                    if(retry<3){
+                        generatePuzzleQuestion();
+                        retry+=1;
+                    }
                     return;
                 }
             }
 
             if (Array.isArray(options)) {
+                retry=0;
                 puzzleDiv.innerHTML = "";
                 hintDiv = document.createElement('div');
                 hintDiv.className = 'question fs-4';
@@ -305,12 +311,16 @@ async function generateFinalStory() {
                 final_story = JSON.parse(final_story);
             } catch (e) {
                 console.error('Error parsing story and answer:', e);
+                if(retry<3){
+                    generateFinalStory();
+                    retry+=1;
+                }
                 return;
             }
         }
 
         if (Array.isArray(final_story)) {
-
+            retry=0;
 
             storyTitleTextDiv = document.createElement('div')
             storyTitleText = document.createElement('h1');
