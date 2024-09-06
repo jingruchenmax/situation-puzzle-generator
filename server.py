@@ -1,6 +1,6 @@
 # TODO: history doesn't seem to be cleaned up (when re-generating full stories (and maybe even draft stories))
 from flask import Flask, request, jsonify, render_template
-import flask_cors_wrapper
+from flask_cors import CORS
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
@@ -9,6 +9,7 @@ from pprint import pprint
 load_dotenv()
 app = Flask(__name__)
 client = OpenAI()
+CORS(app)
 history = []
 draft_story_save = ""
 puzzles = ""
@@ -79,13 +80,11 @@ def generate_story_options(request):
     return messages
 
 @app.route('/')
-@flask_cors_wrapper.handle_cors
 def index():
     backend_url = os.getenv('BACKEND_URL')
     return render_template('index.html', backend_url=backend_url)
 
 @app.route('/generate_draft_story', methods=['POST'])
-@flask_cors_wrapper.handle_cors
 def draft_story():
     global draft_story_save, history
     data = request.get_json()
@@ -112,7 +111,6 @@ def draft_story():
         return jsonify({'error': f"General error: {e}"}), 500
 
 @app.route('/get_options', methods=['GET'])
-@flask_cors_wrapper.handle_cors
 def get_options():
     pprint("get_options")
     query_type = request.args.get('type')
@@ -139,7 +137,6 @@ def get_options():
         return jsonify({'error': f"General error: {e}"}), 500
 
 @app.route('/get_puzzle_options', methods=['GET'])
-@flask_cors_wrapper.handle_cors
 def get_puzzle_options():
     global draft_story_save, history
     try:
@@ -156,7 +153,6 @@ def get_puzzle_options():
         return jsonify({'error': f"General error: {e}"}), 500
 
 @app.route('/generate_final_story', methods=['POST'])
-@flask_cors_wrapper.handle_cors
 def generate_final_story():
     global draft_story_save, history
     hiddeninfo = request.get_json()
