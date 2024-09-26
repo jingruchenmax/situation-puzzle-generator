@@ -1,6 +1,6 @@
 var BACKEND_URL = "https://situationpuzzlegenerator.azurewebsites.net";
-// const backendUrl = BACKEND_URL || 'http://127.0.0.1:5000';
-const backendUrl = 'http://127.0.0.1:5010';
+const backendUrl = BACKEND_URL || 'http://127.0.0.1:5000';
+// const backendUrl = 'http://127.0.0.1:5010';
 
 
 const initialMaxNumCluesToConceal = 2;
